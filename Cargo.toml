@@ -1,0 +1,10 @@
+[package]
+name = "i_am_what_i_eat"
+version = "0.1.0"
+authors = ["David Li <li.davidm96@gmail.com>"]
+
+[dependencies]
+diesel = { version = "0.13.0", features = ["sqlite"] }
+diesel_codegen = { version = "0.13.0", features = ["sqlite"] }
+rocket = "0.2.6"
+rocket_codegen = "0.2.6"
