@@ -6,6 +6,9 @@ pub struct Food {
     pub name: String,
 
     pub calories: f32,
+    pub lipids: f32,
+    pub protein: f32,
+    pub carbohydrates: f32,
 }
 
 #[derive(Serialize,Deserialize,Insertable)]
@@ -14,4 +17,7 @@ pub struct NewFood {
     pub name: String,
 
     pub calories: f32,
+    pub lipids: f32,
+    pub protein: f32,
+    pub carbohydrates: f32,
 }
