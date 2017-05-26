@@ -71,6 +71,41 @@ fn create_unit(unit: JSON<models::NewUnit>) {
     diesel::insert(&unit.0).into(units::table).execute(&*conn).unwrap();
 }
 
+#[get("/entries")]
+fn entries() -> JSON<Vec<models::Entry>> {
+    use diesel::LoadDsl;
+    use models::schema::entries;
+
+    let conn = CONN_POOL.get().unwrap();
+
+    let entries = entries::table.load::<models::Entry>(&*conn).unwrap();
+
+    JSON(entries)
+}
+
+#[derive(Deserialize)]
+struct NewEntry {
+    pub food: i32,
+    pub unit: Option<i32>,
+    pub quantity: f32,
+}
+
+#[post("/entries/<year>/<month>/<day>", data="<entry>")]
+fn create_entry(year: u32, month: u32, day: u32, entry: JSON<NewEntry>) {
+    use diesel::ExecuteDsl;
+    use models::schema::entries;
+
+    let conn = CONN_POOL.get().unwrap();
+
+    let entry = models::NewEntry {
+        date: chrono::NaiveDate::from_ymd(year as i32, month, day),
+        food: entry.0.food,
+        unit: entry.0.unit,
+        quantity: entry.0.quantity,
+    };
+    diesel::insert(&entry).into(entries::table).execute(&*conn).unwrap();
+}
+
 fn main() {
-    rocket::ignite().mount("/", routes![index, foods, create_food, units, create_unit]).launch();
+    rocket::ignite().mount("/", routes![index, foods, create_food, units, create_unit, entries, create_entry]).launch();
 }
