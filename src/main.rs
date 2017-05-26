@@ -29,7 +29,7 @@ fn index() -> &'static str {
 }
 
 #[get("/foods")]
-fn foods() -> String {
+fn foods() -> JSON<Vec<models::Food>> {
     use diesel::LoadDsl;
     use models::schema::foods;
 
@@ -37,7 +37,7 @@ fn foods() -> String {
 
     let foods = foods::table.load::<models::food::Food>(&*conn).unwrap();
 
-    format!("Foods: {}", foods.len())
+    JSON(foods)
 }
 
 #[post("/foods", data="<food>")]
