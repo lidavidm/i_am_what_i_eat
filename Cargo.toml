@@ -4,7 +4,8 @@ version = "0.1.0"
 authors = ["David Li <li.davidm96@gmail.com>"]
 
 [dependencies]
-diesel = { version = "0.13.0", features = ["sqlite"] }
+chrono = { version = "0.3", features = ["serde"] }
+diesel = { version = "0.13.0", features = ["sqlite", "chrono"] }
 diesel_codegen = { version = "0.13.0", features = ["sqlite"] }
 lazy_static = "0.2"
 r2d2 = "0.7.2"

@@ -4,8 +4,10 @@ use r2d2::{Config, Pool};
 use r2d2_diesel::ConnectionManager;
 
 pub mod food;
+pub mod units;
 
 pub use self::food::{Food, NewFood};
+pub use self::units::{Unit, NewUnit};
 
 pub fn establish_connection() -> SqliteConnection {
     SqliteConnection::establish("test.db").unwrap()

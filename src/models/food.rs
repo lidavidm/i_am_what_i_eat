@@ -1,6 +1,7 @@
 use super::schema::foods;
 
 #[derive(Serialize,Deserialize,Queryable)]
+#[has_many(units)]
 pub struct Food {
     pub id: i32,
     pub name: String,

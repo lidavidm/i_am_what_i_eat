@@ -1,6 +1,7 @@
-#![feature(plugin)]
+#![feature(custom_attribute,plugin)]
 #![plugin(rocket_codegen)]
 
+extern crate chrono;
 #[macro_use] extern crate diesel;
 #[macro_use] extern crate diesel_codegen;
 #[macro_use] extern crate lazy_static;
@@ -49,6 +50,27 @@ fn create_food(food: JSON<models::NewFood>) {
     diesel::insert(&food.0).into(foods::table).execute(&*conn).unwrap();
 }
 
+#[get("/units")]
+fn units() -> JSON<Vec<models::Unit>> {
+    use diesel::LoadDsl;
+    use models::schema::units;
+
+    let conn = CONN_POOL.get().unwrap();
+
+    let units = units::table.load::<models::units::Unit>(&*conn).unwrap();
+
+    JSON(units)
+}
+
+#[post("/units", data="<unit>")]
+fn create_unit(unit: JSON<models::NewUnit>) {
+    use diesel::ExecuteDsl;
+    use models::schema::units;
+
+    let conn = CONN_POOL.get().unwrap();
+    diesel::insert(&unit.0).into(units::table).execute(&*conn).unwrap();
+}
+
 fn main() {
-    rocket::ignite().mount("/", routes![index, foods, create_food]).launch();
+    rocket::ignite().mount("/", routes![index, foods, create_food, units, create_unit]).launch();
 }
