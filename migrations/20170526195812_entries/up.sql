@@ -1,7 +1,7 @@
 -- Your SQL goes here
 CREATE TABLE entries (
   id         INTEGER NOT NULL PRIMARY KEY,
-  date       TEXT    NOT NULL,
+  date       DATE    NOT NULL,
 
   food       INTEGER NOT NULL REFERENCES foods(id),
   unit       INTEGER REFERENCES units(id),
