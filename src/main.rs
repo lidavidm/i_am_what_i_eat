@@ -92,10 +92,12 @@ struct NewEntry {
 
 #[post("/entries/<year>/<month>/<day>", data="<entry>")]
 fn create_entry(year: u32, month: u32, day: u32, entry: JSON<NewEntry>) {
-    use diesel::ExecuteDsl;
+    use diesel::{Connection,ExecuteDsl};
     use models::schema::entries;
 
     let conn = CONN_POOL.get().unwrap();
+
+    (&*conn).execute("PRAGMA foreign_keys = ON;").unwrap();
 
     let entry = models::NewEntry {
         date: chrono::NaiveDate::from_ymd(year as i32, month, day),
